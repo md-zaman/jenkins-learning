@@ -109,7 +109,43 @@ Lets modify our shell script and execute it directly from Jenkins
     and enter the shell path under "Execute Shell"
     /tmp/script.sh $FISRT_NAME $SECOND_NAME $SHOW
 
-    
+
+Section 4: Jenkins & Docker
+25. Docker + Jenkins + SSH -1
+
+Let's learn how we can connect from one server to another server.
+We will use containers here to connect. 1st container will be Jenkins and 2nd container will be a container where we will install ssh.
+
+We are using containers here but we can also use 2 different ec2s to represent two servers.
+
+So, let us create 2 containers with the help of a 'docker-compose' file.
+
+    version:'3'
+services:
+  jenkins:
+    container_name: jenkins
+    image: jenkins/jenkins
+    ports:
+      - "8080:8080"
+    volumes:
+      - "$PWD/jenkins_home:/var/jenkins_home"
+    networks:
+      - net
+  remote_host:
+    container_name: remote-host
+    image: remote-host
+    build:
+      context: ubuntu
+    networks:
+      - net
+
+The second container, we will create a Dockerfile and write the below code:
+
+    FROM ubuntu
+    RUN apt -y install openssh-server
+    RUN useradd remote_user && \
+        echo "1234" | passwd remote_user --stdin && \
+        
 
 
 
