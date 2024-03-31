@@ -120,24 +120,24 @@ We are using containers here but we can also use 2 different ec2s to represent t
 
 So, let us create 2 containers with the help of a 'docker-compose' file.
 
-    version:'3'
-services:
-  jenkins:
-    container_name: jenkins
-    image: jenkins/jenkins
-    ports:
-      - "8080:8080"
-    volumes:
-      - "$PWD/jenkins_home:/var/jenkins_home"
-    networks:
-      - net
-  remote_host:
-    container_name: remote-host
-    image: remote-host
-    build:
-      context: ubuntu
-    networks:
-      - net
+  version:'3'
+  services:
+    jenkins:
+      container_name: jenkins
+      image: jenkins/jenkins
+      ports:
+        - "8080:8080"
+      volumes:
+        - "$PWD/jenkins_home:/var/jenkins_home"
+      networks:
+        - net
+    remote_host:
+      container_name: remote-host
+      image: remote-host
+      build:
+        context: ubuntu
+  networks:
+    - net
 
 The second container, we will create a Dockerfile and write the below code:
 
@@ -237,9 +237,173 @@ Section 5: Jenkins & AWS
 32. We will create a jenkins job which will create an SQL backup and 
 upload it on S3.
 
-34. 
+34. Step 1:
+    Add one more service to the docker compose:
+version:'3'
+  services:
+    jenkins:
+      container_name: jenkins
+      image: jenkins/jenkins
+      ports:
+        - "8080:8080"
+      volumes:
+        - "$PWD/jenkins_home:/var/jenkins_home"
+      networks:
+        - net
+    remote_host:
+      container_name: remote-host
+      image: remote-host
+      build:
+        context: ubuntu
+    db_host:
+      container_name: db
+      image: mysql:5.7
+      environment:
+        - "MYSQL_ROOT_PASSWORD=1234" # This is prescribed in docker.
+      volume:
+        - "$PWD/db_data:/var/lib/mysql" # This is where mysql data lives.
+      networks:
+        - net
+  networks:
+    net:
+
+In the above docker compose file, environment variable is mentioned in the 
+docker hub as for password. 
+For volume, we are using the path of the container where mysql data lives.
+
+Lets us recreate the mysql service along with other containers:
+  docker-compose up -d
+  - recreates all the containers
+
+Check if the mysql containers is ready:
+  docker logs -f db
+  - to check the logs
+  - we specifically want to know if this container is ready. There will 
+    be a line where it says: 
+    'mysqld: ready for connections.'
+
+Get inside the container and login into mysql:
+  docker exec -ti db bash
+  - enter into the container
+
+  mysql -u root -p
+  - asks for password. Enter '1234' to login because this password 
+    was assigned earlier
+  
+  show databases;
+  - shows all dbs
+
+34. Install MySQL Client and AWS CLI
+
+We will install the MySQL client and AWS CLI in our SSH container
+
+    FROM ubuntu
+    RUN apt -y install openssh-server
+    RUN useradd remote_user && \
+        echo "1234" | passwd remote_user --stdin && \
+        mkdir 700 /home/remote_user/.ssh
+    COPY remote-key.pub /home/remote_user/.ssh
+    RUN chown remote_user:remote_user -R /home/remote_user/.ssh && \
+        chown 600 /home/remote_user/.ssh/authorized_keys
+    RUN /usr/sbin/sshd-keygen
+
+    RUN apt -y install mysql
+
+    RUN apt -y install epel-release && \
+        apt -y install python3-pip && \
+        pip3 install --upgrade pip && \
+        pip3 install awscli
+
+    CMD /usr/sbin/sshd -D
+
+We have added SQL and aws cli in our ubuntu remote host. Now, simply 
+recreate the docker-compose to get the remote host updated.
+
+  docker compose build
+  - to build the container
+  docker-compose up -d
+  - creates the containers
+
+Go inside the SSH container and enter values in your sql data:
+  docker exec -ti remote-host bash
+  - enters into the container
+  mysql -u root -h db_host -p
+  - enters into the mysql container from remote_host container
+  - here we are adding the '-h' which means the host where we want to 
+    login as from our current container
+  - enter the password to login
+
+  Enter the following set of commands to create a database and enter details:
+  show databases;
+  create database testdb;
+  use testdb;
+  create table info (name varchar(20)), lastname varchar(20), age int(2);
+  show tables;
+  desc info;
+  insert into info values ('md', 'zaman', 21);
+  select * from info;
+
+36. Create an S3 Bucket
+Create an S3 bucket in AWS
+
+34. Add a user and attach a policy giving it S3 full access: 
+'AmazonS3FullAccess' and preferably down the access file for 
+authentication.
+
+35. Manually take a backup and upload it on S3
+
+Steps:
+a. Login into the remote container
+b. Create a backup [there is a command for this]
+c. Upload this backup to S3. Since we have AWS CLI already in this 
+    container [from Dockerfile]
+
+a. Login:
+  docker exec -ti remote_host bash
+
+b. mysqldump -u root -h db_host -p testdb > /tmp/db.sql
+    - creates a backup of 'testdb' from the host (here, host=db_host and 
+      testdb is the name of the db) 
+  Make sure you are logged in to your AWS CLI. You can do that by:
+  export AWS_ACCESS_KEY_ID=<your_ID>
+  export AWS_SECRET_ACCESS_KEY=<your_SECRET_KEY>
+
+c. aws s3 cp /tmp/db.sql s3://jenkins-mysql-backup/db.sql
+    - copies the 'db.sql' back to our s3
+
+39. & 40. Automating the backup and upload process with a shell script
+
+We are going to use the following script:
+
+#/bin/bash
+
+DATE=$(date +%H-%M-%S)
+BACKUP=db-$DATE.sql
+
+DB_HOST=$1
+DB_PASSWORD=$2
+DB_NAME=$3
+AWS_SECRET=$4
+BUCKET_NAME=$5
+
+mysqldump -u root -h $DB_HOST -p$DB_PASSWORD $DB_NAME > /tmp/$BACKUP && \
+export AWS_ACCESS_KEY_ID=AKIAJRWZWY3CPV3F3JPQ && \
+export AWS_SECRET_ACCESS_KEY=$AWS_SECRET && \
+echo "Uploading your $BACKUP backup" && \
+aws s3 cp /tmp/db-$DATE.sql s3://$BUCKET_NAME/$BACKUP
+
+41. Manage Sensitive Information in Jenkins (Keys and Passsword)
+
+We have 2 sesitive information in our script which we want to execute 
+The sql password and our AWS secret key.
+Go to jenkins and simply add them in the credentials by selecting secret 
+key.
+
+42. Create a Jenkins job to upload your DB to AWS
+
+Select freestyle project and name it as you want. We will name it 
+'backup-to-aws'
+Select on 'this project is parameterised' and select the 'String Parameter'
 
 
-
-
- 
+      
