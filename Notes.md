@@ -1,3 +1,37 @@
+Jenkins is the leading open source automation server.
+Jenkins provides hundreds of plugins to support building, deploying and automating any project.
+
+We will use docker to use Jenkins
+Install docker and then install jenkins' using jenkins official image.
+After installation,
+  sudo systemctl start docker
+  - to start docker
+
+Now, we also want to ensure that docker is running when we turn on the 
+machine.
+  sudo systemctl enable docker
+  - enable to turn on docker when the machine starts
+
+Despite all this if we type:
+  docker ps
+  - lists all the running containers
+  we get error because we are 'jenkins' user. So we type:
+  sudo usermod -aG docker jenkins
+  - adding 'jenkins' to the docker group so that we can use docker being 
+    the jenkins user.
+
+  We will still have error and to fix that, we have to logout and login 
+  again.
+
+Docker Compose: A utility of docker. Used to run multiple containers.
+Docker-compose file: Get the command to install it for your particular OS 
+
+Now, let us give executable permission to docker compose file:
+  sudo chmod +x /usr/local/bin/docker-compose
+  - give the executable permission
+    if you notice while installing docker compose, the binaries have been 
+    installed in /usr/local/bin/docker-compose
+    
 
 
 Starting from Video 21
@@ -401,9 +435,28 @@ key.
 
 42. Create a Jenkins job to upload your DB to AWS
 
-Select freestyle project and name it as you want. We will name it 
-'backup-to-aws'
-Select on 'this project is parameterised' and select the 'String Parameter'
-
+a. Select freestyle project and name it as you want. We will name it 
+    'backup-to-aws'
+b. Select on 'this project is parameterised' and select the 'String 
+    Parameter'
+c. Look at the script and first add those parameters which are not 
+    secret. (exclude the sql pass and aws secret key for now)
+    Add the parameter as directed earlier
+d. For secrets scroll down and find 'Build Environment' and select 
+    'Use secret texts or files'
+    You will get a 'Binding' option
+    Select 'Secret file' here
+    You will get the dropdown here. This is coming from 'credentials' 
+    you have defined earlier
+    So, add sql password and the aws secret key
+e. Scroll down further you will get a 'Build' section and select from 
+    the dropdown 'Execute shell script on remote host using ssh'
+    You will get the remote host the password of which you have added 
+    earlier.
+    Now, in the 'Command' section, add the command with the parameters 
+    you have mentioned above:
+    /tmp/script.sh $MYSQL_HOST $MYSQL_PASSWORD $DATABASE_NAME $AWS_SECRET_KEY $AWS_BUCKET_NAME 
+    Save the job and execute it 
+    
 
       
