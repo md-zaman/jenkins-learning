@@ -32,7 +32,10 @@ Now, let us give executable permission to docker compose file:
     if you notice while installing docker compose, the binaries have been 
     installed in /usr/local/bin/docker-compose
     
-
+To test that docker-compose is installed, enter following command:
+  docker-compose
+  - lists all the options and details of the command.
+  
 
 Starting from Video 21
 Section 3: Getting Started with Jenkins
