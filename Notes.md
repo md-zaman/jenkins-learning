@@ -36,6 +36,55 @@ To test that docker-compose is installed, enter following command:
   docker-compose
   - lists all the options and details of the command.
   
+We will install Jenkins using docker.
+So, to install using the docker image:
+  docker pull jenkins/jenkins
+  - downloads the official jenkins image
+
+  docker info | grep -i root
+  Output: Docker Root Dir: /var/lib/docker
+  - tells where where does docker saves the images
+
+  docker du -sh /var/lib/docker
+  - displays the space docker is taking
+
+#Create a new directory to work on Jenkins:
+  Create a sample docker compose file
+  'vi docker-compose.yml'
+
+  version:'3'
+  services:
+    jenkins:
+      container_name: jenkins
+      images: jenkins/jenkins
+      port:
+        - "8080:8080"
+      volumes:
+        - "$PWD/jenkins_home:/var/jenkins_home"
+      networks:
+        -  net:
+  networks:
+    net
+
+    In the above docker-compose file, we have mapped a volume. To ensure 
+    that the user who will write in this directory (jenkins) has proper permissions
+    we will give permission. Jenkins is is 1000:
+    sudo chown 1000:1000 jenkins_home -R
+
+  To spin the service:
+  docker-compose up -d
+  - starts creating the container of the docker compose
+  - note that docker compose doesn't create the image, it directly creates the container.
+
+  To get logs of any container, we the command:
+  docker logs -f
+  - shows logs of all the containers
+  docker logs -f jenkins
+  - shows logs of jenkins containers by mentioning the name of the container.
+  We will get to see a hash over here. This is the password to login in jenkins later.
+  
+
+
 
 Starting from Video 21
 Section 3: Getting Started with Jenkins
