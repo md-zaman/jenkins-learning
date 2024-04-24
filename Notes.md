@@ -82,9 +82,66 @@ So, to install using the docker image:
   docker logs -f jenkins
   - shows logs of jenkins containers by mentioning the name of the container.
   We will get to see a hash over here. This is the password to login in jenkins later.
-  
+
+  Jenkins is installed now. Lets open it in a browser. Use IP Address:
+  IP_Address:8080
+
+  Install suggested Plugin
+  Enter Password from earlier
+
+  Create user etc and Login
+
+1st Job in Jenkins
+
+  a. Create New - Give a name and create a 'Freestyle Project'
+  b. Under 'Configure' we enter job body
+  c. Under 'Build' write 'Hello World'
+  d. Go to 'Console Output' to see the output
+      You will see the job is finished successfully with 'Hello World'.
+
+Playing with the Job
+
+  a. Go to the job and click on 'Configure' section
+  b. Date command in Linux:
+      date
+      - outputs the current date
+    Now code:
+    echo "Current date is $(date)"
+    - outputs the above string with the actual date
+    echo "Current user is $(whoami)"
+    - self explainatory
+
+Redirect your 1st job's output
+
+  a. In bash - Born Against Shell
+      To define Environmental Variables
+      NAME = Zaman
+      echo $Name
+      Output: Zaman
+      echo "Hello, $Name. Current date and time is $(date)."
+
+      Lets put it in 'Build'
+      Name = Zaman
+      echo "Hello, $Name. Current date and time is $(date)"
+  b. Save and Build Now
+  d. Console Output
+      Successfully executed
+
+  e. Let input the above shell code in a file the CLI.
+      This is known as Redirection
+      echo "Hello, $Name. Current date and time is $(date)" > /tmp/info
+      cat /tmp/info
+      - outputs the above content:
+      Hello, Zaman. Current date and time is Fri Dec 00:39 UTC ..
+      Lets remove this 
+      rm -rf /tmp/info
 
 
+  f. We ca do the above thing from the jenkins server as well
+    Paste the above redirect command in the Jenkins 'Build.sh' and you will
+    get the file in /tmp/info
+    
+    
 
 Starting from Video 21
 Section 3: Getting Started with Jenkins
