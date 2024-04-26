@@ -629,3 +629,53 @@ There is an option called "Project roles"
 Use that and go to Assign Roles and do it.
 Explore it.
 
+Section 8: Jenkins Tips & Tricks
+
+75. Global environment variables in Jenkins
+
+There are few Global Variables already available in Jenkins which we don't 
+have to define. Google and you will find
+
+To check we make a freestyle project and under "Execute shell" write in 
+command: 
+echo "Build Number is $BUILD_NUMBER"
+echo "Build ID is $BUILD_ID"
+
+All these variables are predefined variables in Jenkins
+Build Now and check the Console Output
+
+Application- when we need mail to notify that this build number with this 
+job ID is failing etc.
+
+76. Create your own custom global environment variables
+
+Manage Jenkins > Configure System > Global Properties > Environment Variables (enable this) > Add 
+Give and name and its value
+
+You can check if it is working.
+
+Stop
+
+77. Modify the Jenkins URL
+
+You can edit the jenkins URL (doesn't seem that important)
+
+78. Meet the Jenkins' cron: Learn how to execute Jobs automatically
+
+Used in Backup jobs 
+Supppose you want to take a backup at 1 am at night
+
+Jenkins has a built-in cron like a scheduler
+
+Select any job or create a new one > Configure >
+Build Triggers > Build periodically > Here we need to add a cron 
+expression - Google to find out cron expression like "cron expressio for 
+everyday at 1 am" and copy and past it here.
+
+You can also make it every single minute ans save the job.
+
+Now this job will run every single minute.
+
+79. Learn how to trigger Jobs from external sources: Create a generic user
+
+Create a user and give the user necessary permissions
