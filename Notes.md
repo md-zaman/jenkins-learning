@@ -568,4 +568,64 @@ e. Scroll down further you will get a 'Build' section and select from
     Save the job and execute it 
     
 
-      
+Skipping Section 6: Jenkins & Ansible
+
+Section 7: Jenkins & Security
+
+67: Intro- Learn how to Enable/Disable Login in Jenkins
+
+Configure Global Security and enable it.
+This is to ensure that whenever we enter the URL from incognito browser, we
+need password to login. If we don't do this and enter the URL, we will be 
+directly logged in in Jenkins.
+
+68: Allow Users to Sign Up
+
+Manage Jenkins > Configure Global Security > Security Realm >
+Allow users to sign up (This is a checkbox) enable/disable this.
+Now, when you enter the URL, you will have the option to sign up
+
+* Keep this disabled because any user who signs up is by default an 
+admin and has all the access of all the jobs etc..
+
+69. Install powerful security plugin
+
+There is a security plugin by the name : "Role-based Authorization Strategy"
+Install it.
+Now, let's play with it..
+Manage Jenkins > Configure Global Security > Authorization > Role-Based 
+Strategy > Save
+When you do this we see a new section in "Manage Jenkins" by the name: 
+"Manage and Assign Roles"
+
+70. Create users manually in the Jenkins DB
+
+This is how to do it without signing up from the Login Option shown 
+previously.
+Manage Jenkins > Manage Users > Create User
+If you create a user using this method, and login you will see the msg:
+"Access Denied - tom is missing the Overall/Read permission" 
+This is because of the security plugin we had installed (Role-based Authorization Strategy) 
+So, users cannot have any permissions unless you explicitly define that.
+We have delegated the permissions to the above plugin.
+
+71. Ever heard about roles? Let's create a Read Only role!
+
+Manage Jenkins > Manage and Assign Roles >  There are options here you 
+have to look
+ 
+
+73. Create a role to execute jobs, and assign that role to your user
+
+Same as above. Here, create a "Role to add" and then make such a role
+Ensure to enable "Overall Read"
+Save
+Then click "Assign Roles"
+and explore the options here.
+
+74. Learn how to restrict Jobs to users using Project Roles.
+
+There is an option called "Project roles"
+Use that and go to Assign Roles and do it.
+Explore it.
+
