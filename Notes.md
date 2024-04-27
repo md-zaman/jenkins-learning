@@ -678,4 +678,118 @@ Now this job will run every single minute.
 
 79. Learn how to trigger Jobs from external sources: Create a generic user
 
-Create a user and give the user necessary permissions
+Create a user and give the user necessary permissions so that it can 
+trigger the jobs etc.
+Manage > Manage Users > Create User > Enter
+
+Manage Jenkins > Manage Roles > Create a role by the name "trigger-jobs" 
+and for 
+Overall section : "Read" for "trigger-jobs"
+Job section: "Build" and "Read"
+Save
+
+Now assign the user "Jenkins" and give the role of "trigger-jobs"
+Save
+
+81. Trigger your Jobs from Bash Scripts (No parameters)
+
+a. Right click on "Build Now" button and copy the link (You know this link 
+will do the same thing as the button)
+
+b. Token - We need to pass something like a token
+    Manage Jenkins > Configure Global Security > CSRF Protection 
+      - ignore this - this was to tell you that it uses crumbs
+    
+    We need to retrieve a crumb by using the below link:
+    crumb=$(curl -u "jenkins:1234" -s 'http:jenkins.local:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
+    - here the link "jenkins.local" is is not recognised so let us edit the
+      host
+      sudo vo /etc/hosts
+      Write the below:
+        127.0.0.1  jenkins.local
+
+      After adding the host, you will be able to resolve it by:
+      curl jenkins.local:8080
+      So, now jenkins will also return a crumb if we enter:
+      curl -u "jenkins:1234" -s 'http:jenkins.local:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)'
+      - this will return a crumb like:
+        Jenkins-Crumb:6ef554... jenkins-data]$
+      Let us execute the same command in a variable:
+      crumb=$(curl -u "jenkins:1234" -s 'http:jenkins.local:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
+
+      Now if we echo crumb we will get a value
+      echo $crumb
+      jenkins..
+
+      Let us create a scrript to create the job:
+      
+      vi crumb.sh
+      crumb=$(curl -u "jenkins:1234" -s 'http://jenkins.local:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
+      curl -u "jenkins:1234" -H "$crumb" -X POST http://jenkins.local:8080/job/ENV/build?delay=0sec
+
+      chmod +x crumb.sh
+      ./crumb.sh
+
+82. Trigger your Jobs from Bash Scripts (With Parameters)
+
+Over here also we will do the same thing i.e., we will retrieve the crumb 
+and add the add the link of the "Build Now" button but this time, we will 
+add parametres with this link.
+
+  vi crumb.sh
+  crumb=$(curl -u "jenkins:1234" -s 'http://jenkins.local:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
+      curl -u "jenkins:1234" -H "$crumb" -X POST http://jenkins.local:8080/job/ENV/build?delay=0sec
+  chmod +x crumb.sh
+  ./crumb.sh
+
+Section 9: Jenkins & Email
+
+84. Install a Mail Plugin 
+    Install the plugin "Mailer Plugin"
+
+85. Integrate Jenkins and AWS Simple Email Service
+
+    On AWS:
+    Go to SES (Simple Email Service)
+    Verify a Domain or an Email Address
+
+    On Jenkins:
+    Manage Jenkins > Configure System > Email Notification > Click on 
+    "Advanced" and provide all the information > get the smtp settings 
+    from AWS (left-hand side)
+
+    Fill all and come to AWS and "Create smtp credentails" 
+    make an IAM user and create 
+    after saving come back here and you will be able to find out all the 
+    ports you can use
+    Paste the port here in jenkins also
+    Scroll up and enter the System Admin e-mail address = ...
+    Test configuration
+
+
+86. Integrate Jenkins and Gmail
+
+  Same way but use your gmail Username and Password in Jenkins
+  Google for rest of the details.
+
+  Activate Gmail "less secure apps"
+  Test Configuration - Success (Check your gmail)
+
+
+87. Add notifications to your jobs
+
+  a. Open any job and scroll down to the last part: "Post-build Actions"
+  b. Click "Add post-build action" > "E-mail Notification"
+  c. Add email notification Recipents - <enter your mail>
+
+  Now you will receive an email whenever the jobs fails
+  Once you fix the job, you will receive an email that the job is back to 
+  normal.
+  But it will not send you an email for every successful build henceforth
+
+  
+
+  
+
+
+
