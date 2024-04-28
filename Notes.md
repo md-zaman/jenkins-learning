@@ -824,8 +824,24 @@ e. Under "Build" click "Add build step" and select "Invoke top-level Maven targe
 f. Goals : -B Dskip Tests clean package
     - this will actually skip the test and build 
 g. So, the Build will be successful
-h. Again the build will take place in "workspace"
-i. 
+h. Again the build will take place in "workspace" (the jar file will be 
+    saved in workspace since it is a java project)
+
+
+93. Learn how to test your code
+
+This is Unit Testing..
+
+a. Under "Build" click "Add build step" and select Invoke top-level Maven 
+targets and select Maven Version
+b. In "Goal" write simply "test" (this is simply like saying maven test)
+c. Save
+d. Build Now
+e. There was a pproblem in the build process related to environmental variables. You can fix it and then the build was successful.
+
+
+94. Deploy your Jar locally
+
 
   
 
