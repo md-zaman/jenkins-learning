@@ -787,7 +787,45 @@ Section 9: Jenkins & Email
   normal.
   But it will not send you an email for every successful build henceforth
 
-  
+
+Section 10: Jenkins & Maven
+
+88: Intro
+  Maven is a tool that helps build java applications. Good friend of Jenkins
+
+89. Install the Maven Plugin
+
+Install the plugin called "Maven Integration"
+
+
+90. Install the GIT Plugin
+
+Install "Git Plugin" and "Git client"
+
+91. Learn how to clone a GIT/GITHUB repository from Jenkins
+
+a. Create a new job - Freestyle pproject
+b. Allocate "Source Code Management" and check/ Select "Git"
+c. Paste the Repo URL
+d. Select the Credentials (Not needed if it is a public repo)
+e. Can also select the branch
+Everything is being cloned in "Workplace"
+located in /var/jenkins_home/workspace/
+Select the particular job to see the cloned repo
+
+
+92. Learn how to build a JAR using maven
+
+a. We have to define the maven installation
+b. Manage Jenkins > Global Tool Configuration > Under "Maven" enter the name "jenkins-maven" and select the version  
+c. Save
+d. Select the maven-job (currently it is only cloning a repo)
+e. Under "Build" click "Add build step" and select "Invoke top-level Maven targets" . Here, select the "Maven Version" which we had defined earlier
+f. Goals : -B Dskip Tests clean package
+    - this will actually skip the test and build 
+g. So, the Build will be successful
+h. Again the build will take place in "workspace"
+i. 
 
   
 
