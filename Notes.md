@@ -842,7 +842,21 @@ e. There was a pproblem in the build process related to environmental variables.
 
 94. Deploy your Jar locally
 
+a. Add build Step
+b. Execute Shell
+c. Enter the following:
+    echo "***********"
+    echo "Deploying JAR"
+    echo "***********"
 
+    java -jar /var/jenkins_home/workspace/maven-job/target/my-app-1.0-SNAPSHOT.jar
+d. Save
+e. Build Now
+f. Colsole output- You will see it deployed
+
+95. Display the result of your tests using a graph
+
+a. Configure 
   
 
 
