@@ -856,7 +856,43 @@ f. Colsole output- You will see it deployed
 
 95. Display the result of your tests using a graph
 
-a. Configure 
+a. Configure job
+b. Add Post-build Actions
+c. Publish JUnit test result report
+d. locate the .xml created after we create the jar and enter the path in 
+    "Test report XMLs" : target/surfire-reports/*.xml
+e. Now you will be able to see the graph of the execution
+
+
+96. Archive the last successful artifact
+
+a. Configure Jobs
+b. Post build actions
+c. Archieve the Artifact
+d. Files to archive : target/*jar
+e. There are more settings in adv. like save only if the build is successful
+f. Save
+g. Build
+h. Now you can see a "Last Successful Artifacts"
+
+
+97. Send Email notifications about the status of your maven project
+
+a. Post build action
+b. Email Notifications
+c. Add email
+d. When you build and if there is a faliure you will receive and email
+e. You will also receive an email when there is a successful build just 
+    after a faliure but after that you will not receive an email for every 
+    build (ofcorse)
+
+Section 11: Jenkins & GIT
+
+98. Create a GIT Server using Docker
+
+Here we will install GitLab and not GitHub
+
+
   
 
 
