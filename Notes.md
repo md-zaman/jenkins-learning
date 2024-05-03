@@ -892,6 +892,39 @@ Section 11: Jenkins & GIT
 
 Here we will install GitLab and not GitHub
 
+Simple installation process. Can take help from GitLab's official website.
+
+The tutorial used docker to bring that service up.
+
+99. Create your first Git Repository
+
+Create a repo very easy
+
+100. Create a Git User to interact with your Repository
+
+a. Create a GitLab user from its interface
+b. Edit the user to create a password
+c. Select the project and click on manage access and assign that user 
+    created above.
+d. Add the user as a maintainer
+
+
+101. Upload the code for the Java App in your Repo
+
+a. Install GIT on your linux machine. Command may vary beacuse the instructor is using CentOS
+b. Clone a simple maven project from github to your host machine
+c. Now clone the repo made in GitLab. GitLab 
+d. Have to make some settings in dns 
+e. Now copy all the files and directories cloned from GitHub to GitLab 
+    (in the host machine using the cp command).
+f. now git status 
+        git add .
+        git commit
+        git push
+g. Now everything is copied to gitlab
+
+
+102. Integrate your Git server to your maven Job
 
   
 
