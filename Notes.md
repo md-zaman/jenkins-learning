@@ -926,6 +926,24 @@ g. Now everything is copied to gitlab
 
 102. Integrate your Git server to your maven Job
 
+a. Come to the jenkins jobs and select a job which you had connected with 
+   GitHub now edit it and put the GitLab repo link
+b. Don't forget to add the user in jenkins follow the process discussed 
+    above.
+c. Don't forget to change the port- In the tutorial 8090 was used for 
+    external pport while 80 was used in internal port.
+
+103. Learn about Git Hooks
+
+Add git hooks very easy not writing anything for it.
+
+104. Trigger your Jenkins job using a Git Hook
+
+Simply says that whenever you change the code jenkins job gets triggered.
+
+Section 12: Jenkins & DSL
+
+
   
 
 
