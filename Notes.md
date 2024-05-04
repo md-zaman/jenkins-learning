@@ -943,8 +943,188 @@ Simply says that whenever you change the code jenkins job gets triggered.
 
 Section 12: Jenkins & DSL
 
+105. Introduction: Jenkins DSL
 
-  
+The Job DSL plugin attempts to solve this problem by allowing jobs to be defined in a programmatic form in a human readable file. Writing such a file is feasible without being a Jenkins expert as the configuration from the web UI translates intuitively into code.
+
+106. Install the DSL Plugin
+
+Install like any other plugin "Job DSL"
+
+107. What is a Seed Job in DSL?
+
+a. Seeds jobs create more jenkins jobs
+
+b. Create a seed job with the freestyle project and name it "job-dsl"
+c. Scroll down and you will find that under "Build" you have Process Job 
+    DSLs under which you can write the scripts
 
 
+108. Understand the DSL Structure
+
+a. Open the job "job-dsl"
+b. Open the under Build - DSL Script write the following script:
+    job('job_dsl_created) {
+    }
+
+    - here job is a function to create a new jenkins job
+
+c. When you build this job (this is a seed job btw) you will find a new job created by jenkins
+d. When you see the Console Output, you will find the seed job (or the 
+    parent job) name also
+    which is "job-dsl"
+e. This mean we can create a new job with a seed job with the help of a code.
+f. To know about more functions of DSL you can follow this link:
+    https://jenkinsci.github.io/job-dsl-plugin/
+
+109. Description
+
+This is how to create a description of a job:
+
+a. Again click on a job or create a new job from where you will create a 
+    child job and under DSL script write down the following script:
+
+    job('job_dsl_example') {
+      description('This is my awesome job')
+    }
+
+    - create a child job and adds a description
+
+110. Parameters
+
+This is how you can add a parameter for a child job:
+
+a. Follow to same process and add the following to add parametres:
+    job('job_dsl_example') {
+      description('This is my awesome job')
+
+      parameters {
+        stringParam('Planet', defaultValue = 'world', description = 'This is the world')
+        booleanParam('FLAG', true)
+        choiceParam('OPTION', ['option 1 (default)', 'option 2', 'option 3'])
+      }
+    }
+b. Build this job and you will get another job
+c. Open the child job which you have created - job_dsl_example and you 
+    will find that this job has all the parameters mentioned above.
+
+d. If you build this job you will get exactly like the above.
+
+111. SCM
+
+Now we will add the source code management- the GitHub Repo
+
+a. Add the folowing code:
+  job('job_dsl_example') {
+      description('This is my awesome job')
+
+      parameters {
+        stringParam('Planet', defaultValue = 'world', description = 'This is the world')
+        booleanParam('FLAG', true)
+        choiceParam('OPTION', ['option 1 (default)', 'option 2', 'option 3'])
+      }
+
+      scm {
+        git('https://github.com/jenkins-docs/simple-java-maven-app', 'master')
+      }
+    }
+
+b. Works the same way no need for explaination
+
+112. Triggers
+
+We can add cron for triggers:
+
+a. Add the code:
+    job('job_dsl_example') {
+      description('This is my awesome job')
+
+      parameters {
+        stringParam('Planet', defaultValue = 'world', description = 'This is the world')
+        booleanParam('FLAG', true)
+        choiceParam('OPTION', ['option 1 (default)', 'option 2', 'option 3'])
+      }
+
+      scm {
+        git('https://github.com/jenkins-docs/simple-java-maven-app', 'master')
+      triggers {
+        cron('h 5 * * 7')
+      }
+      }
+    }
+
+113. Steps
+
+Here we will learn how to add shell execution using DSL
+
+a. Write the code:
+
+    job('job_dsl_example') {
+      description('This is my awesome job')
+
+      parameters {
+        stringParam('Planet', defaultValue = 'world', description = 'This is the world')
+        booleanParam('FLAG', true)
+        choiceParam('OPTION', ['option 1 (default)', 'option 2', 'option 3'])
+      }
+
+      scm {
+        git('https://github.com/jenkins-docs/simple-java-maven-app', 'master')
+      }
+      triggers {
+        cron('h 5 * * 7')
+      }
+      steps {
+        shell("echo 'Hello World")
+      }
+    }
+
+b. When you build now you will have - Under the Build Execute Shell
+    command the code 
+    i.e., echo 'Hello World
+
+c. You can also add more commands like this:
+
+    ...
+    steps {
+        shell("""
+        echo 'Hello World'
+        echo 'Running Script'
+        /tmp/script.sh
+        """)
+      }
+    }
+
+
+114. Mailer
+
+We can add an email where we can receive notifications:
+
+a. Add the code:
+    job('job_dsl_example') {
+      description('This is my awesome job')
+
+      parameters {
+        stringParam('Planet', defaultValue = 'world', description = 'This is the world')
+        booleanParam('FLAG', true)
+        choiceParam('OPTION', ['option 1 (default)', 'option 2', 'option 3'])
+      }
+
+      scm {
+        git('https://github.com/jenkins-docs/simple-java-maven-app', 'master')
+      }
+      triggers {
+        cron('h 5 * * 7')
+      }
+      steps {
+        shell("echo 'Hello World")
+      }
+      publishers {
+        mailer('mail@myemail.com', true, true)
+      }
+    }
+
+b. You will find this under "Post0build Actions"
+
+115. Recreate the Ansible Job using DSL
 
