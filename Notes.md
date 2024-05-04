@@ -1128,3 +1128,282 @@ b. You will find this under "Post0build Actions"
 
 115. Recreate the Ansible Job using DSL
 
+Watched the video but skipping this because didn't execute ansible earlier
+
+116. Recreate the Maven Job using DSL
+
+Here we will recreate the maven job we had created above:
+
+a. Write the following script:
+    job('maven_dsl') {
+
+    description('Maven dsl project')
+
+    scm {
+        git('https://github.com/jenkins-docs/simple-java-maven-app', 'master', {node -> node / 'extensions' << '' })
+    }
+  
+    steps {
+        maven {
+            mavenInstallation('mvn-jenkins')
+            goals('-B -DskipTests clean package')
+        }
+        maven {
+            mavenInstallation('mvn-jenkins')
+            goals('test')
+        }
+        shell('''
+            echo ************RUNNING THE JAR************************     
+            java -jar /var/jenkins_home/workspace/mavn/target/my-app-1.0-SNAPSHOT.jar
+        ''')
+    }
+
+    publishers {
+        archiveArtifacts('target/*.jar')
+        archiveJunit('target/surefire-reports/*.xml')
+        mailer('ricardo.andre.gonzalez07@gmail.com', true, true)
+    }
+}
+
+117. Version your DSL code using Git
+
+Not much to write
+
+
+118. Magic? Create Jobs only pushing the DSL code to your Git server!
+
+Not writing for some valid reasons
+
+Section 13: CI/CD Defination
+
+119. Introduction to CI/CD
+
+Author's Introduction:
+  In this section we are going to learn a lot about the famous CI/CD.
+
+Just to tell you:
+
+CI/CD is nothing else but a methodology/strategy to deploy code faster to production!
+
+Thinks that you have an app and you want to deploy it to prod. What should you do? Well you should do a lot manual things, like testing it yourself, compiling, deploying, etc. All of this is normally done manually by a human who can make mistakes! And probably that guy will be awake at 2 am deploying to prod. Trust me, I've lived it.
+
+So, how does CI/CD help?
+
+Well, you will define an entire workflow that will build, test and deploy automatically for you! Isn't cool?
+
+The process is defined by some steps, starting at CI which is Continuous Integration, where you build an test your code; optionally, you could pass to Continuous Delivery, which deploys your built and tested app to a dev/stg/qa env (just to test again) and finally you deploy to production!
+
+You can read this great article to go deeper: https://www.infoworld.com/article/3271126/ci-cd/what-is-cicd-continuous-integration-and-continuous-delivery-explained.html
+
+Don't worry, this is just a super quick summary; I don't want to be boring talking too much.
+
+Let's jump into the action and review some basics!
+
+120. Continuous Integration
+
+Continuos Integration nothing else but Building and Testing
+
+121. Continuous Delivery
+
+It is optional and includes deploying the app in test env and 
+doing a lot of tests- mainly acceptance testing
+
+122. Continuous Deployment
+
+Deploy/"Promote" to Production
+
+Section 14: Jenkins Pipeline- Jenkinsfile
+
+123. Introduction to Pipeline
+
+Explation using a diagram
+
+124. Introduction to Jenkinsfile
+
+Similar 
+A stage is a step of your workflow and then you define steps in that
+like Build, Test and Deploy
+
+There are 2 types of pipelines in Jenkins:
+a. Declarative Pipeline - easy
+b. Scripted Pipeline - little bit complicated it is Groovy
+
+125. Install the Jenkins Pipeline Plugin
+
+Install "Pipeline"
+should be already installed while suggested plugins
+
+126. Create your first Pipeline
+
+a. A pipeline starts with 
+
+pipeline {
+  agent any
+
+}
+
+- this is mandatory
+
+b. Then we have stages:
+
+pipeline {
+  agent any
+
+  stages('Build') {
+    steps {
+      echo Building
+    }
+  }
+
+  stage('Test') {
+    step {
+      echo 'Testing..'
+    }
+  }
+}
+
+c. So to create a pipeline job in jenkins:
+    click on create new job and click the "Pipeline" icon
+    When you enter into that job you will find the box to write pipeline
+    scripts.
+
+127. Add multi-steps to your Pipeline
+
+You can add multiple shell commands by using ''' and closing with ''' :
+
+pipeline {
+
+    agent any
+    
+    stages {
+
+        stage('Build') {
+            steps {
+                sh 'echo "My first pipeline"'
+                sh '''
+                   echo "I can add more stuff here"
+                   ls -lah
+
+                '''
+            }
+
+128. Retry
+
+This is how we can ask jekins to retry:
+*Timeout is just a Stage
+pipeline {
+
+    agent any    
+    stages {
+        stage('Timeout') {
+            steps {
+              retry(3) {
+                sh 'I am going to fail'
+              }
+            }
+        }
+    }
+}
+
+- It's getting failed because There is no command in Linux "I am going to 
+  fail". We should have written echo instead of sh.
+
+So this will retry for 3 times
+
+129. Timeouts
+
+We can time out a process if it is taking more than expected.
+
+pipeline {
+
+    agent any    
+    stages {
+        stage('Timeout') {
+            steps {
+              retry(3) {
+                sh 'echo hello'
+              }
+              timeout(time: 3, unit: 'SECONDS') {
+                sh 'sleep 5'
+              }
+            }
+        }
+    }
+}
+
+130. Environment variables
+
+You can declare environmental variables and for that we don't have to put 
+it under stage. We can add it just after the "agent any"
+
+pipeline {
+
+    agent any
+
+    environment {
+      NAME = 'md'
+      LASTNAME = 'zaman'
+    }
+
+    stages {
+      stage('Build') {
+        steps {
+          sh 'echo $NAME $LASTNAME'
+        }
+      }
+    }
+}
+
+131. Credentials
+
+create a credetials in jenkins 1st and name it TEST
+now we can use it with the following script:
+
+pipeline {
+
+    agent any
+
+    environment {
+      secret = credentials('TEST')
+    }
+    stages {
+      stage('Example stage 1') {
+        steps {
+          sh 'echo $secret'
+        }
+      }
+    }
+}
+
+132. Post actions
+
+After your job is finished we can execute few things based on how your 
+job got executed. Look below to understand more:
+
+pipeline {
+    agent any
+    stages {
+        stage('Test') {
+            steps {
+                sh 'echo "Fail!"; exit 1'
+            }
+        }
+    }
+    post {
+        always {
+            echo 'I will always get executed :D'
+        }
+        success {
+            echo 'I will only get executed if this success'
+        }
+        failure {
+            echo 'I will only get executed if this fails'
+        }
+        unstable {
+            echo 'I will only get executed if this is unstable'
+        }
+    }
+}
+
+Only these 4 are there.
+
