@@ -35,8 +35,10 @@ Now, let us give executable permission to docker compose file:
     installed in /usr/local/bin/docker-compose
     
 To test that docker-compose is installed, enter following command:
+  ```ssh
   docker-compose
   - lists all the options and details of the command.
+  ```
   
 We will install Jenkins using docker.
 So, to install using the docker image:
