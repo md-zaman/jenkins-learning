@@ -100,8 +100,8 @@ So, to install using the docker image:
   ```
 
   To get logs of any container, we the command:
-  docker logs -f
-  - shows logs of all the containers
+  `docker logs -f
+  - shows logs of all the containers`
   docker logs -f jenkins
   - shows logs of jenkins containers by mentioning the name of the container.
   We will get to see a hash over here. This is the password to login in jenkins later.
