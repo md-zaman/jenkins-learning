@@ -100,10 +100,14 @@ So, to install using the docker image:
   ```
 
   To get logs of any container, we the command:
-  `docker logs -f
-  - shows logs of all the containers`
+  ```ssh
+  docker logs -f
+  - shows logs of all the containers
+  ```
+  ```ssh
   docker logs -f jenkins
   - shows logs of jenkins containers by mentioning the name of the container.
+  ```
   We will get to see a hash over here. This is the password to login in jenkins later.
 
   Jenkins is installed now. Lets open it in a browser. Use IP Address:
@@ -126,17 +130,21 @@ Playing with the Job
 
   a. Go to the job and click on 'Configure' section
   b. Date command in Linux:
+      ```ssh
       date
       - outputs the current date
+      ```
     Now code:
+    ```ssh
     echo "Current date is $(date)"
     - outputs the above string with the actual date
     echo "Current user is $(whoami)"
     - self explainatory
 
+    ```
 Redirect your 1st job's output
 
-  a. In bash - Born Against Shell
+  a. In bash section - **B**orn **A**gainst **Sh**ell
       To define Environmental Variables
       NAME = Zaman
       echo $Name
@@ -152,12 +160,19 @@ Redirect your 1st job's output
 
   e. Let input the above shell code in a file the CLI.
       This is known as Redirection
+      ```ssh
       echo "Hello, $Name. Current date and time is $(date)" > /tmp/info
+      ```
+      ```ssh
       cat /tmp/info
-      - outputs the above content:
+        - outputs the above content:
       Hello, Zaman. Current date and time is Fri Dec 00:39 UTC ..
-      Lets remove this 
+      ```
+      Lets remove this :
+
+      ```ssh
       rm -rf /tmp/info
+      ```
 
 
   f. We ca do the above thing from the jenkins server as well
