@@ -158,10 +158,10 @@ Redirect your 1st job's output
 
   Lets put it in 'Build'
 
-    ```ssh
-    Name = Zaman
-    echo "Hello, $Name. Current date and time is $(date)"
-    ```
+  ```ssh
+   Name = Zaman
+   echo "Hello, $Name. Current date and time is $(date)"
+  ```
 
   b. Save and Build Now
 
