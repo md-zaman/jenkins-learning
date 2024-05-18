@@ -43,20 +43,29 @@ To test that docker-compose is installed, enter following command:
   
 We will install Jenkins using docker.
 So, to install using the docker image:
+  ```ssh
   docker pull jenkins/jenkins
   - downloads the official jenkins image
+  ```
 
+```ssh
   docker info | grep -i root
   Output: Docker Root Dir: /var/lib/docker
-  - tells where where does docker saves the images
+  - tells where does docker saves the images
+```
 
+```ssh
   docker du -sh /var/lib/docker
   - displays the space docker is taking
+```
 
 #Create a new directory to work on Jenkins:
   Create a sample docker compose file
-  'vi docker-compose.yml'
+ ```ssh
+  vi docker-compose.yml
+ ```
 
+```yml
   version:'3'
   services:
     jenkins:
@@ -70,6 +79,7 @@ So, to install using the docker image:
         -  net:
   networks:
     net
+```
 
     In the above docker-compose file, we have mapped a volume. To ensure 
     that the user who will write in this directory (jenkins) has proper permissions
