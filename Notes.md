@@ -154,15 +154,18 @@ Redirect your 1st job's output
       Lets put it in 'Build'
       Name = Zaman
       echo "Hello, $Name. Current date and time is $(date)"
+
   b. Save and Build Now
-  d. Console Output
+
+  c. Console Output
       Successfully executed
 
-  e. Let input the above shell code in a file the CLI.
+  d. Let input the above shell code in a file the CLI.
       This is known as Redirection
       ```ssh
       echo "Hello, $Name. Current date and time is $(date)" > /tmp/info
       ```
+
       ```ssh
       cat /tmp/info
         - outputs the above content:
@@ -175,7 +178,7 @@ Redirect your 1st job's output
       ```
 
 
-  f. We ca do the above thing from the jenkins server as well
+  e. We ca do the above thing from the jenkins server as well
     Paste the above redirect command in the Jenkins 'Build.sh' and you will
     get the file in /tmp/info
     
