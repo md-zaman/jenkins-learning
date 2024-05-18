@@ -222,8 +222,7 @@ Section 3: Getting Started with Jenkins
 2. To copy the above file to a container:
     docker cp script.sh jenkins:/tmp/script.sh
 
-    Now, we can execute the same from our Jenkins by mentioning the path
-    in the shell box. Open the job and under 'Build' under 'Execute shell':
+    Now, we can execute the same from our Jenkins Console by mentioning the path in the shell box. Open the job and under 'Build' under 'Execute shell':
 
     /tmp/script.sh Md Zaman
 
@@ -237,7 +236,7 @@ Section 3: Getting Started with Jenkins
 
     - gives you the same output
 
-    Takeaway is that you can execute a shell script from Jenkins
+    Takeaway is that you can execute a shell script from Jenkins Console also
 
 22. Add Parametres to your job in Jenkins
 
@@ -276,7 +275,7 @@ Section 3: Getting Started with Jenkins
     Change the script:
     echo "Hello, $FIRST_NAME $SECOND_NAME $LAST_NAME"
 
-    Now you will get option to Enter the First Name and the Second Name and a choice to select from a dropdown where the above options are available- Smith, Gonzales, Doe
+    Now you will get option to Enter the First Name and the Second Name and a choice (drop-down) to select from a dropdown where the above options are available- Smith, Gonzales, Doe
 
 24. Basic Logic and Boolean Parameters
 
@@ -341,14 +340,14 @@ The second container, we will create a Dockerfile and write the below code:
 
 To login from jenkins to ssh, we need to create a keygen. So enter the 
 following command for keygen:
+
   ssh-keygen -f remote-key
   - (Press 2 Enters after the above command)
   - creates a public key and a private key
 
+
 Now, since we have two keys- public and private, we will put the public 
-key to the remote machine so that we can easily login to our ssh container 
-using the private key. So, for this we will change the Dockerfile of ssh 
-container as below:
+key to the remote machine so that we can easily login to our ssh container using the private key. So, for this we will change the Dockerfile of ssh container as below:
 
   FROM ubuntu
     RUN apt -y install openssh-server
@@ -361,11 +360,12 @@ container as below:
     RUN /usr/sbin/sshd-keygen
     CMD /usr/sbin/sshd -D
 
-Now, simply run deploy the containers with the follwing command and then we will try to connect from jenkins container to the ssh container:
+Now, simply run deploy the containers with the following command and then we will try to connect from jenkins container to the ssh container:
   docker-compose up -d
   - brings up the containers
 
   Now let us login to the jenkins container and ssh to the remote ssh container:
+  
   docker exec -it jenkins bash
   ssh remote_user@remote_host
   - this will ask for password and then you will be able to get inside of 
@@ -380,8 +380,7 @@ Now, simply run deploy the containers with the follwing command and then we will
   ls
   - you will find the remote key here
   ssh -i remote-key remote_user@remote_host
-  - this time you will not be asked the password because you are using the 
-    remote key
+  - this time you will not be asked the password because you are using the remote key
 
 29. Jenkins Plugin Installation
 
