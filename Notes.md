@@ -147,16 +147,16 @@ Redirect your 1st job's output
 
   a. In bash section - **B**orn **A**gainst **Sh**ell
 
-      To define Environmental Variables
+    To define Environmental Variables
 
-      ```ssh
+  ```ssh
       NAME = Zaman
       echo $Name
       Output: Zaman
       echo "Hello, $Name. Current date and time is $(date)."
-      ```
+  ```
 
-    Lets put it in 'Build'
+  Lets put it in 'Build'
       Name = Zaman
       echo "Hello, $Name. Current date and time is $(date)"
 
