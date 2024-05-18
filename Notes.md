@@ -161,21 +161,21 @@ Redirect your 1st job's output
       Successfully executed
 
   d. Let input the above shell code in a file the CLI.
-      This is known as Redirection
-      ```ssh
+      This is known as Redirection:
+    ```ssh
       echo "Hello, $Name. Current date and time is $(date)" > /tmp/info
-      ```
+    ```
 
-      ```ssh
+    ```ssh
       cat /tmp/info
         - outputs the above content:
       Hello, Zaman. Current date and time is Fri Dec 00:39 UTC ..
-      ```
-      Lets remove this :
+    ```
+    Lets remove this :
 
-      ```ssh
+    ```ssh
       rm -rf /tmp/info
-      ```
+    ```
 
 
   e. We ca do the above thing from the jenkins server as well
