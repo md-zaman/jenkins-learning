@@ -81,9 +81,9 @@ So, to install using the docker image:
     net
 ```
 
-    ```ssh
+```ssh
     -In the above docker-compose file, we have mapped a volume. 
-    ```
+```
     
   To ensure that the user who will write in this directory (jenkins) has proper permissions, we will give permission. Jenkins is 1000:
 
