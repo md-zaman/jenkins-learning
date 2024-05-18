@@ -28,7 +28,7 @@ Docker-compose file: Get the command to install it for your particular OS
 
 Now, let us give executable permission to docker compose file:
   sudo chmod +x /usr/local/bin/docker-compose
-  - give the executable permission
+  - gives the executable permission
     if you notice while installing docker compose, the binaries have been 
     installed in /usr/local/bin/docker-compose
     
