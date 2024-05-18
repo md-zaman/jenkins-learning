@@ -86,10 +86,10 @@ So, to install using the docker image:
     ```
     
   To ensure that the user who will write in this directory (jenkins) has proper permissions, we will give permission. Jenkins is 1000:
-  
-    ```ssh
+
+  ```ssh
     sudo chown 1000:1000 jenkins_home -R
-    ```
+  ```
 
   To spin the service:
 
