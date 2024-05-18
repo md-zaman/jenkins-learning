@@ -129,19 +129,20 @@ So, to install using the docker image:
 Playing with the Job
 
   a. Go to the job and click on 'Configure' section
+
   b. Date command in Linux:
-      ```ssh
-      date
-      - outputs the current date
-      ```
-    Now code:
-    ```ssh
+  ```ssh
+    date
+    - outputs the current date
+  ```
+  Now code:
+
+  ```ssh
     echo "Current date is $(date)"
     - outputs the above string with the actual date
     echo "Current user is $(whoami)"
     - self explainatory
-
-    ```
+  ```
 Redirect your 1st job's output
 
   a. In bash section - **B**orn **A**gainst **Sh**ell
