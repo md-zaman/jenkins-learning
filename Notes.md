@@ -396,7 +396,7 @@ Click on 'Add' in SSH sites. Now fill in the details:
 Hostname- remote_host
 Port- 22
 Credentails- from the dropdown select. If you don't find one, click on add.
-  You can either add the cedential from here or 
+  You can either add the credential from here or 
   Credentails>Jenkins>Global Credentails>Add Credentials 
   Kind- SSH Username and Private key
   Scope Global - Default
@@ -450,7 +450,7 @@ version:'3'
       container_name: db
       image: mysql:5.7
       environment:
-        - "MYSQL_ROOT_PASSWORD=1234" # This is prescribed in docker.
+        - "MYSQL_ROOT_PASSWORD=1234" # This is prescribed in docker.io
       volume:
         - "$PWD/db_data:/var/lib/mysql" # This is where mysql data lives.
       networks:
@@ -458,8 +458,7 @@ version:'3'
   networks:
     net:
 
-In the above docker compose file, environment variable is mentioned in the 
-docker hub as for password. 
+In the above docker compose file, environment variable is mentioned in the docker hub as for password. 
 For volume, we are using the path of the container where mysql data lives.
 
 Lets us recreate the mysql service along with other containers:
@@ -538,7 +537,7 @@ Go inside the SSH container and enter values in your sql data:
 Create an S3 bucket in AWS
 
 34. Add a user and attach a policy giving it S3 full access: 
-'AmazonS3FullAccess' and preferably down the access file for 
+'AmazonS3FullAccess' and preferably download the access file for 
 authentication.
 
 35. Manually take a backup and upload it on S3
@@ -585,7 +584,7 @@ aws s3 cp /tmp/db-$DATE.sql s3://$BUCKET_NAME/$BACKUP
 
 41. Manage Sensitive Information in Jenkins (Keys and Passsword)
 
-We have 2 sesitive information in our script which we want to execute 
+We have 2 sensitive information in our script which we want to execute 
 The sql password and our AWS secret key.
 Go to jenkins and simply add them in the credentials by selecting secret 
 key.
@@ -623,9 +622,7 @@ Section 7: Jenkins & Security
 67: Intro- Learn how to Enable/Disable Login in Jenkins
 
 Configure Global Security and enable it.
-This is to ensure that whenever we enter the URL from incognito browser, we
-need password to login. If we don't do this and enter the URL, we will be 
-directly logged in in Jenkins.
+This is to ensure that whenever we enter the URL from incognito browser, we need password to login. If we don't do this and enter the URL, we will be directly logged in in Jenkins.
 
 68: Allow Users to Sign Up
 
@@ -717,10 +714,10 @@ Jenkins has a built-in cron like a scheduler
 
 Select any job or create a new one > Configure >
 Build Triggers > Build periodically > Here we need to add a cron 
-expression - Google to find out cron expression like "cron expressio for 
+expression - Google to find out cron expression like "cron expression for 
 everyday at 1 am" and copy and past it here.
 
-You can also make it every single minute ans save the job.
+You can also make it every single minute and save the job.
 
 Now this job will run every single minute.
 
@@ -731,8 +728,7 @@ trigger the jobs etc.
 Manage > Manage Users > Create User > Enter
 
 Manage Jenkins > Manage Roles > Create a role by the name "trigger-jobs" 
-and for 
-Overall section : "Read" for "trigger-jobs"
+and for Overall section : "Read" for "trigger-jobs"
 Job section: "Build" and "Read"
 Save
 
@@ -741,8 +737,7 @@ Save
 
 81. Trigger your Jobs from Bash Scripts (No parameters)
 
-a. Right click on "Build Now" button and copy the link (You know this link 
-will do the same thing as the button)
+a. Right click on "Build Now" button and copy the link (You know this link will do the same thing as the button)
 
 b. Token - We need to pass something like a token
     Manage Jenkins > Configure Global Security > CSRF Protection 
@@ -752,7 +747,7 @@ b. Token - We need to pass something like a token
     crumb=$(curl -u "jenkins:1234" -s 'http:jenkins.local:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
     - here the link "jenkins.local" is is not recognised so let us edit the
       host
-      sudo vo /etc/hosts
+      sudo vi /etc/hosts
       Write the below:
         127.0.0.1  jenkins.local
 
@@ -781,7 +776,7 @@ b. Token - We need to pass something like a token
 82. Trigger your Jobs from Bash Scripts (With Parameters)
 
 Over here also we will do the same thing i.e., we will retrieve the crumb 
-and add the add the link of the "Build Now" button but this time, we will 
+and add the link of the "Build Now" button but this time, we will 
 add parametres with this link.
 
   vi crumb.sh
@@ -852,7 +847,7 @@ Install "Git Plugin" and "Git client"
 
 91. Learn how to clone a GIT/GITHUB repository from Jenkins
 
-a. Create a new job - Freestyle pproject
+a. Create a new job - Freestyle project
 b. Allocate "Source Code Management" and check/ Select "Git"
 c. Paste the Repo URL
 d. Select the Credentials (Not needed if it is a public repo)
@@ -885,7 +880,7 @@ targets and select Maven Version
 b. In "Goal" write simply "test" (this is simply like saying maven test)
 c. Save
 d. Build Now
-e. There was a pproblem in the build process related to environmental variables. You can fix it and then the build was successful.
+e. There was a problem in the build process related to environmental variables. You can fix it and then the build was successful.
 
 
 94. Deploy your Jar locally
@@ -1019,9 +1014,8 @@ b. Open the under Build - DSL Script write the following script:
 
 c. When you build this job (this is a seed job btw) you will find a new job created by jenkins
 d. When you see the Console Output, you will find the seed job (or the 
-    parent job) name also
-    which is "job-dsl"
-e. This mean we can create a new job with a seed job with the help of a code.
+    parent job) name also which is "job-dsl"
+e. This mean we can create a new job with a seed job with the help of a   code.
 f. To know about more functions of DSL you can follow this link:
     https://jenkinsci.github.io/job-dsl-plugin/
 
@@ -1062,7 +1056,7 @@ d. If you build this job you will get exactly like the above.
 
 Now we will add the source code management- the GitHub Repo
 
-a. Add the folowing code:
+a. Add the following code:
   job('job_dsl_example') {
       description('This is my awesome job')
 
