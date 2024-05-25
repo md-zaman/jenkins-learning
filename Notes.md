@@ -9,18 +9,26 @@ After installation,
 
 Now, we also want to ensure that docker is running when we turn on the 
 machine.
+```ssh
   sudo systemctl enable docker
-  - enable to turn on docker when the machine starts
+  - enables docker to turn on when the machine starts
+```
 
 Despite all this if we type:
+```ssh
   docker ps
   - lists all the running containers
-  we get error because we are 'jenkins' user. So we type:
-  sudo usermod -aG docker jenkins
-  - adding 'jenkins' to the docker group so that we can use docker being 
-    the jenkins user.
 
-  We will still have error and to fix that, we have to logout and login 
+```
+  we get error because we are 'jenkins' user. So we type:
+
+```ssh
+  sudo usermod -aG docker jenkins
+  - adds 'jenkins' to the docker group so that we can use docker being 
+    the jenkins user.
+```
+
+We will still have error and to fix that, we have to logout and login 
   again.
 
 Docker Compose: A utility of docker. Used to run multiple containers.
@@ -28,17 +36,15 @@ Docker-compose file: Get the command to install it for your particular OS
 
 Now, let us give executable permission to docker compose file:
   ```ssh
-  sudo chmod +x /usr/local/bin/docker-compose
-  
-  - gives the executable permission
-    if you notice while installing docker compose, the binaries have been 
-    installed in /usr/local/bin/docker-compose
+  sudo chmod +x /usr/local/bin/docker-compose  
+    - gives the executable permission
+      if you notice while installing docker compose, the binaries have been installed in /usr/local/bin/docker-compose
   ```
     
 To test that docker-compose is installed, enter following command:
   ```ssh
   docker-compose
-  - lists all the options and details of the command.
+    - lists all the options and details of the command.
   ```
   
 We will install Jenkins using docker.
