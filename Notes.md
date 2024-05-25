@@ -1268,7 +1268,7 @@ The process is defined by some steps, starting at CI which is Continuous Integra
 
 You can read this great article to go deeper: https://www.infoworld.com/article/3271126/ci-cd/what-is-cicd-continuous-integration-and-continuous-delivery-explained.html
 
-Don't worry, this is just a super quick summary; I don't want to be boring talking too much.
+
 
 Let's jump into the action and review some basics!
 
@@ -1453,6 +1453,7 @@ pipeline {
 After your job is finished we can execute few things based on how your 
 job got executed. Look below to understand more:
 
+```groovy
 pipeline {
     agent any
     stages {
@@ -1477,6 +1478,7 @@ pipeline {
         }
     }
 }
+```
 
 Only these 4 are there.
 
